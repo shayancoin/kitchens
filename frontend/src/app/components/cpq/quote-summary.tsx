@@ -26,6 +26,12 @@ const categoryLabels: Record<FinishCategoryKey, string> = {
 
 type SelectionMap = Partial<Record<FinishCategoryKey, FinishItem>>;
 
+/**
+ * Builds a configuration payload containing the current timestamp and the provided finish selections.
+ *
+ * @param selections - Map of selected finish items keyed by finish category
+ * @returns An object with `generatedAt` set to the current ISO timestamp and `selections` containing a shallow copy of the provided selections
+ */
 function buildPayload(selections: SelectionMap): ConfigurationPayload {
   return {
     generatedAt: new Date().toISOString(),
@@ -33,6 +39,11 @@ function buildPayload(selections: SelectionMap): ConfigurationPayload {
   };
 }
 
+/**
+ * Triggers a browser download of the given configuration payload as a timestamped JSON file.
+ *
+ * @param payload - The configuration object to serialize and download; the file name will include the current timestamp (e.g., `kitchen-config-<timestamp>.json`).
+ */
 function downloadPayload(payload: ConfigurationPayload) {
   const dataStr = JSON.stringify(payload, null, 2);
   const blob = new Blob([dataStr], { type: 'application/json' });

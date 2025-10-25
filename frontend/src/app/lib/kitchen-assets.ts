@@ -32,6 +32,12 @@ const FINISH_CATEGORY_CONFIG: Array<{
   },
 ];
 
+/**
+ * Convert a path or token segment into a human-friendly, title-cased label.
+ *
+ * @param segment - The raw segment which may contain underscores, dashes, or extra spaces
+ * @returns The segment with underscores and dashes replaced by single spaces, collapsed whitespace trimmed, and each word capitalized
+ */
 function formatSegmentForDisplay(segment: string): string {
   return segment
     .replace(/_/g, ' ')
@@ -41,6 +47,14 @@ function formatSegmentForDisplay(segment: string): string {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+/**
+ * Produce a human-friendly display name and an optional SKU candidate from a file name.
+ *
+ * @param fileName - The original file name (may include extension and underscore-separated tokens)
+ * @returns An object with:
+ *   - `name`: a title-cased, space-normalized display name derived from the file name
+ *   - `sku`: the last underscore-separated token when its length is 12 characters or fewer, otherwise `undefined`
+ */
 function formatFileName(fileName: string): { name: string; sku?: string } {
   const base = fileName.replace(path.extname(fileName), '');
   const tokens = base.split('_').filter(Boolean);
@@ -73,6 +87,12 @@ function formatFileName(fileName: string): { name: string; sku?: string } {
   };
 }
 
+/**
+ * Reads directory entries for the given filesystem path.
+ *
+ * @param dirPath - Filesystem path of the directory to read
+ * @returns An array of `fs.Dirent` entries for the directory; an empty array if the directory cannot be read
+ */
 async function safeReadDir(dirPath: string): Promise<fs.Dirent[]> {
   try {
     return await fs.readdir(dirPath, { withFileTypes: true });
@@ -82,6 +102,13 @@ async function safeReadDir(dirPath: string): Promise<fs.Dirent[]> {
   }
 }
 
+/**
+ * Collects finish image assets from a kitchen folder and returns them as structured FinishItem entries.
+ *
+ * @param category - The finish category key to assign to each collected item.
+ * @param folder - Array of path segments under the kitchen root that identifies the folder to scan.
+ * @returns An array of FinishItem objects for image files found under the specified folder (including subdirectories), sorted by `name`. Each item includes an `id` combining the category and file path, an optional `sku` if detected, a public `src` URL, and a `group` label derived from the file's relative folder (defaults to "General" for files in the root).
+ */
 async function collectFinishItems(
   category: FinishCategoryKey,
   folder: string[],
@@ -130,6 +157,11 @@ async function collectFinishItems(
   return items;
 }
 
+/**
+ * Load and assemble finish categories with their items by scanning the configured asset folders.
+ *
+ * @returns An array of FinishCategory objects, each containing the category metadata and a sorted list of FinishItem entries discovered under that category's configured folder structure.
+ */
 export async function loadFinishCatalog(): Promise<FinishCategory[]> {
   const categories: FinishCategory[] = [];
 
@@ -146,6 +178,11 @@ export async function loadFinishCatalog(): Promise<FinishCategory[]> {
   return categories;
 }
 
+/**
+ * Collects metadata for 2D DWG drawing files in the kitchen public folder.
+ *
+ * @returns An array of DwgAsset objects containing `fileName`, `label`, `url`, and optional `sizeInBytes`.
+ */
 export async function loadTwoDDrawings(): Promise<DwgAsset[]> {
   const folderSegments = ['TECHNICAL DRAWINGS 2D (.DWG)'];
   const folderFsPath = path.join(KITCHEN_ROOT, ...folderSegments);

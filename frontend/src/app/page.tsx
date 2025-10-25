@@ -5,6 +5,13 @@ import QuoteSummary from './components/cpq/quote-summary'
 import DrawingsPanel from './components/cpq/drawings-panel'
 import { loadFinishCatalog, loadTwoDDrawings } from './lib/kitchen-assets'
 
+/**
+ * Loads finish catalog and 2D drawings, then renders the Kitchen CPQ configurator page.
+ *
+ * Renders a full-page configurator UI that presents finish selectors, a quote summary, and a drawings panel.
+ *
+ * @returns The React element for the Kitchen CPQ Configurator page, including header, finish selectors, quote summary, and drawings panel.
+ */
 export default async function Home() {
   const [finishCatalog, drawings] = await Promise.all([
     loadFinishCatalog(),

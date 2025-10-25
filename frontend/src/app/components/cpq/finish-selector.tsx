@@ -28,6 +28,12 @@ interface FinishSelectorProps {
   category: FinishCategory;
 }
 
+/**
+ * Group FinishItem objects by their `group` property.
+ *
+ * @param items - Array of finish items to group; each item's `group` value is used as the key.
+ * @returns An object mapping group names to arrays of `FinishItem` that belong to that group.
+ */
 function groupItems(items: FinishItem[]): Record<string, FinishItem[]> {
   return items.reduce<Record<string, FinishItem[]>>((acc, item) => {
     if (!acc[item.group]) {

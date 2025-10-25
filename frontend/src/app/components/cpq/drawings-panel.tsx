@@ -20,6 +20,12 @@ interface DrawingsPanelProps {
   drawings: DwgAsset[];
 }
 
+/**
+ * Format a file size in bytes into a human-readable string.
+ *
+ * @param bytes - The size in bytes; if omitted or zero, an unknown-size placeholder is used.
+ * @returns A string with one decimal place and appropriate unit (e.g., "1.2 MB"), or "Unknown size" when `bytes` is not provided or zero.
+ */
 function formatFileSize(bytes?: number): string {
   if (!bytes) return 'Unknown size';
   const units = ['B', 'KB', 'MB', 'GB'];
