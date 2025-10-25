@@ -14,6 +14,12 @@ export const metadata: Metadata = {
   },
 }
 
+/**
+ * Defines the application's root HTML layout, applies global fonts, and wraps page content with app providers.
+ *
+ * @param children - The page content to render inside the application's body.
+ * @returns The root HTML structure (<html> and <body>) with Inter and Orbitron fonts applied and `children` wrapped by the Providers component.
+ */
 export default function RootLayout({
   children,
 }: {

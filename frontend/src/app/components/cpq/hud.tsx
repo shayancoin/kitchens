@@ -15,6 +15,18 @@ export interface CPQHudProps {
 
 const formatNumber = (value: number) => new Intl.NumberFormat('en-US').format(value);
 
+/**
+ * Renders a compact CPQ heads-up display presenting system status, performance metrics, and feature states.
+ *
+ * @param status - Human-readable system status label shown next to the status indicator
+ * @param fps - Frames-per-second value (displayed rounded)
+ * @param nodes - Number of nodes (formatted with en-US grouping)
+ * @param mode - Current mode label
+ * @param trailsActive - Whether trails are active; displays "ACTIVE" or "DISABLED"
+ * @param glowActive - Whether glow is active; displays "ENABLED" or "OFFLINE"
+ * @param flowActive - Whether flow is active; displays "ACTIVE" or "STANDBY"
+ * @returns The HUD as a JSX element suitable for rendering in the app UI
+ */
 export function CPQHud({
   status,
   fps,
