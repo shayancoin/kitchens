@@ -1,3 +1,6 @@
+'use server';
+
+import type { Dirent } from 'fs';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { DwgAsset, FinishCategory, FinishCategoryKey, FinishItem } from '../types/cpq';
@@ -73,7 +76,7 @@ function formatFileName(fileName: string): { name: string; sku?: string } {
   };
 }
 
-async function safeReadDir(dirPath: string): Promise<fs.Dirent[]> {
+async function safeReadDir(dirPath: string): Promise<Dirent[]> {
   try {
     return await fs.readdir(dirPath, { withFileTypes: true });
   } catch (error) {
@@ -131,19 +134,20 @@ async function collectFinishItems(
 }
 
 export async function loadFinishCatalog(): Promise<FinishCategory[]> {
-  const categories: FinishCategory[] = [];
+  const itemPromises = FINISH_CATEGORY_CONFIG.map((config) =>
+    collectFinishItems(config.key, config.folder),
+  );
+  const resolvedItems = await Promise.all(itemPromises);
 
-  for (const config of FINISH_CATEGORY_CONFIG) {
-    const items = await collectFinishItems(config.key, config.folder);
-    categories.push({
+  return resolvedItems.map((items, index) => {
+    const config = FINISH_CATEGORY_CONFIG[index];
+    return {
       key: config.key,
       title: config.title,
       description: config.description,
       items,
-    });
-  }
-
-  return categories;
+    };
+  });
 }
 
 export async function loadTwoDDrawings(): Promise<DwgAsset[]> {
@@ -154,6 +158,7 @@ export async function loadTwoDDrawings(): Promise<DwgAsset[]> {
 
   for (const entry of entries) {
     if (!entry.isFile()) continue;
+    if (!entry.name.toLowerCase().endsWith('.dwg')) continue;
 
     const filePath = path.join(folderFsPath, entry.name);
     let sizeInBytes: number | undefined;

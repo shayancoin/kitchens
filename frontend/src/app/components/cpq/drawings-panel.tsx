@@ -21,7 +21,7 @@ interface DrawingsPanelProps {
 }
 
 function formatFileSize(bytes?: number): string {
-  if (!bytes) return 'Unknown size';
+  if (bytes == null) return 'Unknown size';
   const units = ['B', 'KB', 'MB', 'GB'];
   let size = bytes;
   let unitIndex = 0;
@@ -49,7 +49,7 @@ const DrawingsPanel: React.FC<DrawingsPanelProps> = ({ drawings }) => {
           </Stack>
         </Box>
         <Divider />
-        <VStack align="stretch" spacing={0} divider={<Divider />}> 
+        <VStack align="stretch" spacing={0} divider={<Divider />}>
           <Box p={5}>
             <Heading as="h4" size="sm" mb={3}>
               2D DWG Downloads
@@ -67,10 +67,28 @@ const DrawingsPanel: React.FC<DrawingsPanelProps> = ({ drawings }) => {
                       </Stack>
                       <HStack spacing={2}>
                         <Badge colorScheme="purple">{formatFileSize(asset.sizeInBytes)}</Badge>
-                        <Button as={Link} href={asset.url} target="_blank" rel="noopener noreferrer" leftIcon={<ExternalLinkIcon />} size="sm" variant="ghost" colorScheme="pink">
+                        <Button
+                          as={Link}
+                          href={asset.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          leftIcon={<ExternalLinkIcon />}
+                          size="sm"
+                          variant="ghost"
+                          colorScheme="pink"
+                          aria-label={`Preview ${asset.fileName}`}
+                        >
                           Preview
                         </Button>
-                        <Button as={Link} href={asset.url} download leftIcon={<ArrowDownIcon />} size="sm" colorScheme="pink">
+                        <Button
+                          as={Link}
+                          href={asset.url}
+                          download
+                          leftIcon={<ArrowDownIcon />}
+                          size="sm"
+                          colorScheme="pink"
+                          aria-label={`Download ${asset.fileName}`}
+                        >
                           Download
                         </Button>
                       </HStack>

@@ -6,10 +6,20 @@ import DrawingsPanel from './components/cpq/drawings-panel'
 import { loadFinishCatalog, loadTwoDDrawings } from './lib/kitchen-assets'
 
 export default async function Home() {
-  const [finishCatalog, drawings] = await Promise.all([
+  const [finishCatalogResult, drawingsResult] = await Promise.allSettled([
     loadFinishCatalog(),
     loadTwoDDrawings(),
   ])
+  if (finishCatalogResult.status === 'rejected') {
+    console.error('Failed to load finish catalog', finishCatalogResult.reason)
+  }
+  if (drawingsResult.status === 'rejected') {
+    console.error('Failed to load 2D drawings', drawingsResult.reason)
+  }
+
+  const finishCatalog =
+    finishCatalogResult.status === 'fulfilled' ? finishCatalogResult.value : []
+  const drawings = drawingsResult.status === 'fulfilled' ? drawingsResult.value : []
 
   return (
     <Box as="main" minH="100vh" display="flex" flexDirection="column" bg="gray.50">

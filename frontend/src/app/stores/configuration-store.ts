@@ -11,12 +11,21 @@ interface ConfigurationState {
 export const useConfigurationStore = create<ConfigurationState>((set, get) => ({
   selections: {},
   setSelection: (category, item) =>
-    set((state) => ({
-      selections: {
-        ...state.selections,
-        [category]: item,
-      },
-    })),
+    set((state) => {
+      if (item.category !== category) {
+        console.warn(
+          `Attempted to assign item category "${item.category}" to selection slot "${category}". Ignoring mismatched item.`,
+        );
+        return {};
+      }
+
+      return {
+        selections: {
+          ...state.selections,
+          [category]: item,
+        },
+      };
+    }),
   clearSelection: (category) =>
     set((state) => {
       const nextSelections = { ...state.selections };

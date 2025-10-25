@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { DownloadIcon, ExternalLinkIcon, InfoIcon } from '@chakra-ui/icons';
 import { useConfigurationStore } from '../../stores/configuration-store';
-import { ConfigurationPayload, FinishCategoryKey, FinishItem } from '../../types/cpq';
+import { ConfigurationPayload, FinishCategoryKey } from '../../types/cpq';
 
 const categoryLabels: Record<FinishCategoryKey, string> = {
   countertop: 'Countertop Finish',
@@ -24,34 +24,45 @@ const categoryLabels: Record<FinishCategoryKey, string> = {
   texture: 'Texture',
 };
 
-type SelectionMap = Partial<Record<FinishCategoryKey, FinishItem>>;
+function downloadPayload(payload: ConfigurationPayload): boolean {
+  let url: string | undefined;
+  let link: HTMLAnchorElement | undefined;
+  let linkAppended = false;
 
-function buildPayload(selections: SelectionMap): ConfigurationPayload {
-  return {
-    generatedAt: new Date().toISOString(),
-    selections: { ...selections },
-  };
-}
+  try {
+    const dataStr = JSON.stringify(payload, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    url = URL.createObjectURL(blob);
 
-function downloadPayload(payload: ConfigurationPayload) {
-  const dataStr = JSON.stringify(payload, null, 2);
-  const blob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
+    link = document.createElement('a');
+    link.href = url;
+    link.download = `kitchen-config-${Date.now()}.json`;
+    document.body.appendChild(link);
+    linkAppended = true;
+    link.click();
 
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `kitchen-config-${Date.now()}.json`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+    return true;
+  } catch (error) {
+    console.error('Failed to export configuration payload', error);
+    return false;
+  } finally {
+    if (link && linkAppended && link.parentNode) {
+      link.parentNode.removeChild(link);
+    }
+    if (url) {
+      URL.revokeObjectURL(url);
+    }
+  }
 }
 
 const QuoteSummary: React.FC = () => {
-  const selections = useConfigurationStore((state) => state.selections);
+  const { selections, getPayload } = useConfigurationStore((state) => ({
+    selections: state.selections,
+    getPayload: state.getPayload,
+  }));
   const toast = useToast();
 
-  const payload = useMemo(() => buildPayload(selections), [selections]);
+  const payload = useMemo(() => getPayload(), [getPayload, selections]);
   const hasSelections = Object.keys(selections).length > 0;
 
   return (
@@ -107,9 +118,20 @@ const QuoteSummary: React.FC = () => {
                 return;
               }
 
-              downloadPayload(payload);
+              const exportSucceeded = downloadPayload(payload);
+              if (!exportSucceeded) {
+                toast({
+                  status: 'error',
+                  title: 'Export failed',
+                  description: 'We could not prepare the download. Please try again.',
+                });
+                return;
+              }
+
               toast({ status: 'success', title: 'Configuration exported', duration: 2500 });
             }}
+            isDisabled={!hasSelections}
+            aria-disabled={!hasSelections}
           >
             Export JSON
           </Button>
