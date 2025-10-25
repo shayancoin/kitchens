@@ -1,6 +1,6 @@
-# MVP Frontend
+# Kitchens Frontend
 
-This is the frontend for the AI Engineering MVP Template built with Next.js.
+This is the frontend for the AI Engineering Kitchens built with Next.js.
 
 ## Development
 
