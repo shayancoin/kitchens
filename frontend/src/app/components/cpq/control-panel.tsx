@@ -21,6 +21,15 @@ export interface CPQControlPanelProps {
 const joinClassNames = (...tokens: Array<string | false | null | undefined>) =>
   tokens.filter(Boolean).join(' ');
 
+/**
+ * Renders the CPQ control panel with toggle switches, an accent color picker, and an execute action.
+ *
+ * @param toggles - Array of toggle definitions (id, label, active, onToggle) shown as individual switch controls.
+ * @param accentColor - Current accent color as a hex string (e.g., `#ff0000`) bound to the color input.
+ * @param onAccentChange - Callback invoked with the new hex color when the color input changes.
+ * @param onExecute - Callback invoked when the execute action is triggered.
+ * @returns The CPQ control panel element.
+ */
 export function CPQControlPanel({ toggles, accentColor, onAccentChange, onExecute }: CPQControlPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 

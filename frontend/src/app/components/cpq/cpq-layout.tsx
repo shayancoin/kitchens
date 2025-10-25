@@ -39,6 +39,13 @@ const lightenColor = (hex: string, amount: number) => {
   return `#${toHex(lighten(r))}${toHex(lighten(g))}${toHex(lighten(b))}`;
 };
 
+/**
+ * Renders the CPQ visualization layout with interactive controls and themable accent color.
+ *
+ * Manages internal state for mode cycling, performance metrics, visual toggles (flow, trails, glow), and accent color theming.
+ *
+ * @returns The React element for the CPQ layout, including HUD, performance bars, and control panel.
+ */
 export function CPQLayout() {
   const [modeIndex, setModeIndex] = useState(0);
   const [flowActive, setFlowActive] = useState(true);
