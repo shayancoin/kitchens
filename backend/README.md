@@ -1,6 +1,6 @@
-# MVP Backend
+# Kitchens Backend
 
-This is the backend for the AI Engineering MVP Template built with FastAPI.
+This is the backend for the AI Engineering Kitchens built with FastAPI.
 
 ## Development
 
