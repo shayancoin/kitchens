@@ -9,10 +9,14 @@ const theme = extendTheme({
       purple: '#8a08eb',
     },
   },
+  fonts: {
+    heading: 'var(--font-orbitron), "Orbitron", sans-serif',
+    body: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  },
   styles: {
     global: {
       body: {
-        bg: 'white',
+        bg: 'transparent',
       },
     },
   },

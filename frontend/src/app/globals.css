@@ -3,15 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
+  --foreground-rgb: 221, 245, 255;
+  --background-rgb: 0, 0, 0;
   --vector-pink: 235, 8, 138;
   --vector-purple: 138, 8, 235;
+  --cpq-primary: #00ffff;
+  --cpq-accent: #88ffff;
+  --cpq-secondary: #0088ff;
+  --cpq-primary-rgb: 0, 255, 255;
+  --cpq-accent-rgb: 136, 255, 255;
+  --cpq-secondary-rgb: 0, 136, 255;
+  --cpq-gradient-start: #00ff88;
+  --cpq-gradient-middle: #00ffff;
+  --cpq-gradient-end: #0088ff;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
+  min-height: 100vh;
 }
 
 @layer base {
