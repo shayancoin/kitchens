@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Born of Data – Particle Lifeform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <div class="grid-overlay"></div>
+    <div class="tech-pattern"></div>
+    <div class="circuit-lines"></div>
+    <div class="scan-line"></div>
+
+    <div id="hud">
+      <div class="hud-line">
+        <span>SYSTEM:</span>
+        <span class="hud-value">ONLINE</span>
+        <div id="status-indicator"></div>
+      </div>
+      <div class="hud-line">
+        <span>FPS:</span>
+        <span class="hud-value" id="fps-display">60</span>
+      </div>
+      <div class="hud-line">
+        <span>NODES:</span>
+        <span class="hud-value" id="node-display">28000</span>
+      </div>
+      <div class="hud-line">
+        <span>MODE:</span>
+        <span class="hud-value" id="mode-display">HARMONIC SPHERE</span>
+      </div>
+      <div class="hud-line">
+        <span>TRAILS:</span>
+        <span class="hud-value" id="trail-display">ACTIVE</span>
+      </div>
+      <div class="hud-line">
+        <span>GLOW:</span>
+        <span class="hud-value" id="glow-display">ENABLED</span>
+      </div>
+    </div>
+
+    <div class="performance-bars">
+      <div class="perf-label">CPU LOAD</div>
+      <div class="perf-bar cpu"></div>
+      <div class="perf-label">GPU LOAD</div>
+      <div class="perf-bar gpu"></div>
+      <div class="perf-label">MEMORY</div>
+      <div class="perf-bar memory"></div>
+    </div>
+
+    <div id="data-stream">HARMONIC SPHERE</div>
+
+    <div id="control-panel">
+      <button id="controls-toggle">
+        <svg class="cyber-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="21" x2="4" y2="14"></line>
+          <line x1="4" y1="10" x2="4" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12" y2="3"></line>
+          <line x1="20" y1="21" x2="20" y2="16"></line>
+          <line x1="20" y1="12" x2="20" y2="3"></line>
+          <line x1="1" y1="14" x2="7" y2="14"></line>
+          <line x1="9" y1="8" x2="15" y2="8"></line>
+          <line x1="17" y1="16" x2="23" y2="16"></line>
+        </svg>
+        CONTROLS
+      </button>
+
+      <div class="control-section">
+        <div class="cyber-switch active" id="flow-switch"></div>
+        <span class="switch-label">DATA_FLOW</span>
+        <div class="cyber-switch active" id="trails-switch"></div>
+        <span class="switch-label">TRAILS</span>
+        <div class="cyber-switch active" id="glow-switch"></div>
+        <span class="switch-label">GLOW_EFFECT</span>
+        <span class="switch-label">COLOR</span>
+        <input type="color" id="color-picker" value="#00ffff">
+      </div>
+
+      <button id="execute-btn">
+        <svg class="cyber-icon" viewBox="0 0 24 24">
+          <polygon points="5,3 19,12 5,21"/>
+        </svg>
+        EXECUTE_NEXT
+      </button>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
